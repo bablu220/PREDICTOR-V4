@@ -3,124 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDICTOR 4.0 | MULTI-GAME HUB</title>
+    <title>PREDICTOR 4.0 | ULTIMATE HUB</title>
     <style>
         :root { --neon: #00ff99; --bg: #050a10; --red: #ff3333; --green: #2ecc71; --violet: #a64dff; }
-        body { background: var(--bg); color: white; font-family: 'Poppins', sans-serif; margin: 0; text-align: center; }
+        body { background: var(--bg); color: white; font-family: 'Poppins', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
         
-        /* Background Animation */
-        .bg-glow { position: fixed; inset: 0; background: radial-gradient(circle at center, #0a192f 0%, #050a10 100%); z-index: -1; }
+        /* Animated Hacker Background */
+        .matrix-bg { position: fixed; inset: 0; background: linear-gradient(rgba(0,255,153,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,153,0.03) 1px, transparent 1px); background-size: 30px 30px; z-index: -1; animation: scroll 20s linear infinite; }
+        @keyframes scroll { from { background-position: 0 0; } to { background-position: 0 1000px; } }
 
-        /* Login Screen */
-        #login-screen { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .login-box { border: 2px solid var(--neon); padding: 40px; border-radius: 20px; box-shadow: 0 0 30px var(--neon); width: 80%; }
+        /* Header & Tabs */
+        .header { background: #1a242c; padding: 15px; border-bottom: 2px solid var(--neon); font-size: 24px; font-weight: 900; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+        .tabs { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+        .tab { background: #111; border: 1px solid var(--neon); color: var(--neon); padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1; max-width: 150px; }
+        .active-tab { background: var(--neon); color: black; box-shadow: 0 0 15px var(--neon); }
 
-        /* Main Lobby */
-        .header { background: #1a242c; padding: 15px; border-bottom: 2px solid var(--neon); font-size: 22px; font-weight: 900; color: var(--neon); }
-        .game-nav { display: flex; justify-content: center; gap: 10px; margin: 20px; }
-        .nav-btn { background: #111; border: 1px solid var(--neon); color: var(--neon); padding: 10px 15px; border-radius: 5px; cursor: pointer; }
-        .active-nav { background: var(--neon); color: black; }
+        /* Status Card */
+        .card { background: rgba(20, 30, 40, 0.95); border: 1px solid #333; margin: 15px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .timer { font-size: 35px; font-weight: 900; color: #ffcc00; margin: 15px 0; text-shadow: 0 0 10px #ffcc00; }
+        .period { font-size: 18px; color: #fff; letter-spacing: 1px; font-weight: bold; }
 
-        /* Status & Ball */
-        .status-card { background: rgba(26,36,44,0.9); margin: 15px; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        .period-id { font-size: 18px; font-weight: bold; color: #fff; }
-        .timer { font-size: 30px; font-weight: 900; color: #ffcc00; margin: 10px 0; }
+        /* Original Ball */
+        .ball-container { height: 120px; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .game-ball { width: 90px; height: 90px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #444, #000); border: 4px solid #444; display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 900; transition: 0.3s; }
+
+        .res-text { font-size: 35px; font-weight: 900; height: 45px; letter-spacing: 5px; }
+
+        /* Action Buttons */
+        .btn-predict { width: 85%; padding: 18px; border-radius: 50px; border: none; background: var(--neon); color: black; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,255,153,0.4); }
+        .btn-predict:disabled { background: #333; color: #666; box-shadow: none; }
         
-        .ball { width: 90px; height: 90px; border-radius: 50%; background: #222; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 45px; font-weight: 900; border: 4px solid #444; transition: 0.4s; }
-
-        .btn-predict { width: 85%; padding: 18px; border-radius: 50px; border: none; background: var(--neon); color: black; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px var(--neon); }
-        
-        /* Telegram Button */
-        .tg-btn { margin-top: 30px; background: #0088cc; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; display: inline-block; font-weight: bold; }
+        .tg-link { margin-top: 25px; display: inline-block; color: #0088cc; text-decoration: none; font-weight: bold; border: 1px solid #0088cc; padding: 10px 20px; border-radius: 30px; }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
+    <div class="matrix-bg"></div>
+    <div class="header">PREDICTOR 4.0🧩</div>
 
-    <div id="login-screen">
-        <div class="login-box">
-            <h1>V4.0 LOGIN</h1>
-            <input type="text" id="keyInput" style="width:90%; padding:15px; margin-bottom:20px; background:transparent; border:1px solid var(--neon); color:white; text-align:center;" placeholder="ENTER LICENSE KEY">
-            <button class="btn-predict" onclick="doLogin()">ACTIVATE</button>
-        </div>
+    <div class="tabs">
+        <div id="tab30" class="tab active-tab" onclick="changeGame('30s')">WINGO 30S</div>
+        <div id="tab60" class="tab" onclick="changeGame('1m')">WINGO 1M</div>
     </div>
 
-    <div id="app" style="display:none;">
-        <div class="header">PREDICTOR 4.0🧩</div>
-        
-        <div class="game-nav">
-            <button class="nav-btn active-nav" id="btn30s" onclick="switchGame('30s')">WINGO 30S</button>
-            <button class="nav-btn" id="btn1m" onclick="switchGame('1m')">WINGO 1M</button>
+    <div class="card">
+        <div id="gameName" style="color:var(--neon); font-size: 14px; margin-bottom: 10px;">MODE: WINGO 30 SECONDS</div>
+        <div id="periodDisplay" class="period">20260415100010001</div>
+        <div id="timerDisplay" class="timer">00:30</div>
+
+        <div class="ball-container">
+            <div id="ball" class="game-ball">?</div>
         </div>
 
-        <div class="status-card">
-            <div id="gameTitle" style="color:var(--neon); font-weight:bold; margin-bottom:10px;">WINGO 30 SECONDS</div>
-            <div id="periodDisplay" class="period-id">SYNCING...</div>
-            <div id="timerDisplay" class="timer">00:00</div>
-            
-            <div id="mainBall" class="ball">?</div>
-            <div id="resText" style="font-size:30px; font-weight:900; height:40px;">---</div>
-        </div>
-
-        <button class="btn-predict" id="pBtn" onclick="startPrediction()">GET PREDICTION</button>
-        
-        <br>
-        <a href="https://t.me/your_channel" class="tg-btn" target="_blank">JOIN TELEGRAM CHANNEL</a>
+        <div id="prediction" class="res-text">READY</div>
     </div>
+
+    <button class="btn-predict" id="pBtn" onclick="analyze()">GET PREDICTION</button>
+    <br>
+    <a href="https://t.me/KulamaniPredictor" class="tg-link">JOIN OFFICIAL TELEGRAM</a>
 
     <script>
-        let currentGame = '30s';
+        let mode = '30s';
 
-        function doLogin() {
-            const key = document.getElementById('keyInput').value;
-            if(key.length > 5) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-                startClock();
+        function changeGame(g) {
+            mode = g;
+            document.getElementById('tab30').classList.toggle('active-tab', g === '30s');
+            document.getElementById('tab60').classList.toggle('active-tab', g === '1m');
+            document.getElementById('gameName').innerText = g === '30s' ? "MODE: WINGO 30 SECONDS" : "MODE: WINGO 1 MINUTE";
+            resetRound();
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const dateStr = now.getFullYear().toString() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
+            
+            let seconds = now.getSeconds();
+            let remaining, periodID;
+
+            if(mode === '30s') {
+                remaining = 30 - (seconds % 30);
+                let total30s = (now.getHours() * 120) + (now.getMinutes() * 2) + (seconds >= 30 ? 1 : 0);
+                periodID = dateStr + "10001" + total30s.toString().padStart(4, '0');
+            } else {
+                remaining = 60 - seconds;
+                let total1m = (now.getHours() * 60) + now.getMinutes();
+                periodID = dateStr + "10001" + total1m.toString().padStart(4, '0');
             }
+
+            document.getElementById('periodDisplay').innerText = periodID;
+            document.getElementById('timerDisplay').innerText = "00:" + (remaining < 10 ? "0" + remaining : remaining);
+            
+            if(remaining === (mode === '30s' ? 30 : 60)) resetRound();
         }
+        setInterval(updateClock, 1000);
 
-        function switchGame(type) {
-            currentGame = type;
-            document.getElementById('btn30s').classList.toggle('active-nav', type === '30s');
-            document.getElementById('btn1m').classList.toggle('active-nav', type === '1m');
-            document.getElementById('gameTitle').innerText = type === '30s' ? "WINGO 30 SECONDS" : "WINGO 1 MINUTE";
-            resetUI();
-        }
-
-        function startClock() {
-            setInterval(() => {
-                const now = new Date();
-                const datePart = now.getFullYear().toString() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
-                
-                let seconds = now.getSeconds();
-                let remaining, periodSuffix;
-
-                if(currentGame === '30s') {
-                    remaining = 30 - (seconds % 30);
-                    let total30s = (now.getHours() * 120) + (now.getMinutes() * 2) + (seconds >= 30 ? 1 : 0);
-                    periodSuffix = "10001" + total30s.toString().padStart(4, '0');
-                } else {
-                    remaining = 60 - seconds;
-                    let total1m = (now.getHours() * 60) + now.getMinutes();
-                    periodSuffix = "10001" + total1m.toString().padStart(4, '0');
-                }
-
-                document.getElementById('periodDisplay').innerText = datePart + periodSuffix;
-                document.getElementById('timerDisplay').innerText = "00:" + (remaining < 10 ? "0" + remaining : remaining);
-                
-                if(remaining === (currentGame === '30s' ? 30 : 60)) resetUI();
-            }, 1000);
-        }
-
-        function startPrediction() {
-            const ball = document.getElementById('mainBall');
-            const res = document.getElementById('resText');
+        function analyze() {
+            const ball = document.getElementById('ball');
+            const res = document.getElementById('prediction');
             const btn = document.getElementById('pBtn');
 
             btn.disabled = true;
             ball.innerText = "⏳";
             res.innerText = "ANALYZING...";
+            res.style.color = "white";
 
             setTimeout(() => {
                 const num = Math.floor(Math.random() * 10);
@@ -130,20 +114,23 @@
 
                 ball.innerText = num;
                 ball.style.background = color;
-                ball.style.boxShadow = `0 0 20px ${color}`;
+                ball.style.boxShadow = `0 0 25px ${color}`;
+                ball.style.borderColor = "#fff";
+                
                 res.innerText = isBig ? "BIG" : "SMALL";
                 res.style.color = color;
             }, 2000);
         }
 
-        function resetUI() {
+        function resetRound() {
             document.getElementById('pBtn').disabled = false;
-            const ball = document.getElementById('mainBall');
+            const ball = document.getElementById('ball');
             ball.innerText = "?";
-            ball.style.background = "#222";
+            ball.style.background = "radial-gradient(circle at 30% 30%, #444, #000)";
             ball.style.boxShadow = "none";
-            document.getElementById('resText').innerText = "---";
-            document.getElementById('resText').style.color = "white";
+            ball.style.borderColor = "#444";
+            document.getElementById('prediction').innerText = "READY";
+            document.getElementById('prediction').style.color = "white";
         }
     </script>
 </body>
