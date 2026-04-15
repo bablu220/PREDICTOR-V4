@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDICTOR 4.0 | KULAMANI</title>
+    <title>PREDICTOR 4.0 | KULAMANI | MASTER ADMIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ff99; --bg: #02060b; --red: #ff3e3e; --green: #00ff73; --violet: #b042ff; }
-        body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
+        body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
 
-        /* Hacking Graphics Background */
+        /* GRAPHIC BACKGROUND (image_17.png Style) */
         .cyber-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.05; z-index: -1; animation: move 20s linear infinite; }
         @keyframes move { from { background-position: 0 0; } to { background-position: 0 1000px; } }
 
-        /* Flow Screens */
-        .screen { display: none; min-height: 100vh; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; }
-        .active { display: flex; }
+        /* SCREENS & CARDS */
+        .screen { display: none; width: 100%; max-width: 400px; flex-direction: column; align-items: center; transition: 0.5s; }
+        .active { display: flex; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* SCREEN 1: LOGIN (image_15.png Style) */
-        #scr-login { justify-content: center; }
-        .glass-card { background: rgba(10, 20, 30, 0.95); border: 2px solid var(--neon); padding: 40px; border-radius: 20px; box-shadow: 0 0 30px rgba(0, 255, 153, 0.3); text-align: center; width: 100%; max-width: 350px; }
+        /* Stage 1: Login (image_15.png Style) */
+        .login-card { background: rgba(10, 20, 30, 0.95); border: 2px solid var(--neon); padding: 40px; border-radius: 20px; box-shadow: 0 0 30px rgba(0, 255, 153, 0.3); text-align: center; width: 85%; }
         .input-key { width: 100%; padding: 15px; background: transparent; border: 1px solid var(--neon); color: var(--neon); border-radius: 10px; margin: 20px 0; text-align: center; font-family: 'Orbitron'; letter-spacing: 2px; }
 
-        /* SCREEN 2: LOBBY (image_12.png Style) */
-        .hacker-lobby-header { width: 100%; max-width: 400px; background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; margin-bottom: 20px; }
+        /* Stage 2 & 3: Multi-Game Lobby (image_12.png Style) */
+        .hacker-lobby-header { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid #333; padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; margin-bottom: 20px; }
         .p-name { color: var(--neon); font-weight: bold; font-family: 'Orbitron'; }
         
-        .system-protocols { width: 100%; max-width: 400px; background: rgba(17, 26, 36, 0.9); border: 1px solid var(--neon); padding: 20px; border-radius: 10px; text-align: left; }
-        .game-btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        .game-card-btn { flex: 1; background: #111; border: 1px solid #333; padding: 15px; text-align: center; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: bold; }
-        .game-card-btn:hover { border-color: var(--neon); background: rgba(0,255,153,0.1); }
+        .game-btn-group { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .game-card-btn { width: 100%; background: #111; border: 1px solid #333; padding: 15px; text-align: left; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: bold; display: flex; justify-content: space-between; }
+        .game-card-btn:hover { border-color: var(--neon); background: rgba(0,255,153,0.1); transform: scale(1.02); }
 
-        /* SCREEN 3: PREDICTION ENGINE (image_16.png Style) */
-        .status-header { width: 100%; max-width: 380px; display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
-        .ball-engine { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #555, #000); border: 5px solid #444; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 900; font-family: 'Orbitron'; margin: 20px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        
-        .main-predict-btn { width: 100%; max-width: 320px; padding: 18px; border-radius: 50px; border: none; background: var(--neon); color: black; font-weight: 900; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px var(--neon); font-family: 'Orbitron'; }
+        /* Stage 4: Prediction Engine (image_16.png Style) */
+        .engine-card { background: rgba(17, 26, 36, 0.9); border: 1px solid var(--neon); padding: 25px; border-radius: 15px; text-align: center; width: 90%; margin-top: 20px; }
+        .status-header { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .period-id { font-size: 16px; font-weight: bold; color: #fff; letter-spacing: 1px; }
+        .timer { font-size: 22px; font-weight: bold; color: #ffcc00; text-shadow: 0 0 10px #ffcc00; }
+
+        .ball-engine { width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #555, #000); border: 5px solid #444; display: flex; align-items: center; justify-content: center; font-size: 55px; font-weight: 900; font-family: 'Orbitron'; margin: 20px auto; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .res-text { font-size: 38px; font-weight: 900; height: 50px; letter-spacing: 4px; margin: 10px 0; }
+
+        /* PRO BUTTONS */
+        .main-btn { width: 100%; max-width: 320px; padding: 18px; border-radius: 50px; border: none; background: linear-gradient(180deg, var(--neon), #00b36b); color: black; font-weight: 900; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px var(--neon); font-family: 'Orbitron'; }
+        .main-btn:disabled { background: #333; color: #666; box-shadow: none; cursor: not-allowed; }
         
         .badge { position: absolute; top: 15px; right: 15px; background: var(--green); color: black; padding: 5px 10px; border-radius: 5px; font-size: 10px; font-weight: bold; }
     </style>
@@ -45,10 +51,12 @@
     <div class="cyber-grid"></div>
 
     <div id="scr-login" class="screen active">
-        <div class="glass-card">
-            <h1 style="color:var(--neon); font-family:'Orbitron';">V4.0 LOGIN</h1>
-            <input type="text" id="key" class="input-key" placeholder="ENTER LICENSE KEY">
-            <button class="main-predict-btn" onclick="checkKey()">VALIDATE KEY</button>
+        <div class="login-card">
+            <h1 style="color:var(--neon); font-family:'Orbitron';">BOT V4.0</h1>
+            <p style="color:#888; font-size:12px;">DEVICE KEY BLOCK: ACTIVE</p>
+            <input type="text" id="license" class="input-key" placeholder="XXXX-XXXX-XXXX-XXXX">
+            <button class="main-btn" onclick="checkLicense()">LOGIN SYSTEM</button>
+            <p id="err" style="color:red; display:none; margin-top:10px;">INVALID KEY (Attempt <span id="attempts">3</span>/3)</p>
         </div>
     </div>
 
@@ -57,63 +65,78 @@
             <div><span style="color:#888">Welcome, </span><span class="p-name">KULAMANI</span></div>
             <button onclick="location.reload()" style="background:none; border:none; color:red; cursor:pointer;">LOGOUT</button>
         </div>
-        
-        <div class="system-protocols">
-            <h4 style="color:var(--neon); text-align:center;">SYSTEM PROTOCOLS V4.0</h4>
-            <div style="font-size:12px; line-height:1.6; color:#aaa;">
-                <span style="color:var(--neon)">> </span> SECURE_CONNECTION: established<br>
-                <span style="color:var(--neon)">> </span> SERVER:secure-v4-node<br>
-                <span style="color:var(--neon)">> </span> PERIOD_SYNC: active
-            </div>
-        </div>
-
-        <h3 style="margin-top:30px; font-family:'Orbitron';">SELECT GAME NODE</h3>
+        <h2 class="lobby-title" style="color:var(--neon); font-family:'Orbitron';">SELECT GAME NODE</h2>
         <div class="game-btn-group">
-            <div class="game-card-btn" onclick="openGame('WINGO 30S')">WINGO 30 SEC</div>
-            <div class="game-card-btn" onclick="openGame('WINGO 1M')">WINGO 1 MIN</div>
+            <div class="game-card-btn" onclick="openGame('WINGO 30S')">
+                <div><span style="color:var(--neon)">●</span> WINGO 30 SEC</div> <span>➔</span>
+            </div>
+            <div class="game-card-btn" onclick="openGame('WINGO 1M')">
+                <div><span style="color:var(--neon)">●</span> WINGO 1 MIN</div> <span>➔</span>
+            </div>
+            <div class="game-card-btn" onclick="openGame('WINGO 3M')">
+                <div><span style="color:var(--neon)">●</span> WINGO 3 MIN</div> <span>➔</span>
+            </div>
+            <div class="game-card-btn" onclick="openGame('WINGO 5M')">
+                <div><span style="color:var(--neon)">●</span> WINGO 5 MIN</div> <span>➔</span>
+            </div>
         </div>
     </div>
 
     <div id="scr-engine" class="screen">
-        <div class="badge">SECURE CONNECTION</div>
-        <button onclick="changeGame()" style="color:var(--neon); background:none; border:none; margin-bottom:20px; cursor:pointer;">◀ BACK TO LOBBY</button>
+        <div class="badge">SECURE_CONNECTION: ESTABLISHED</div>
+        <button onclick="backToLobby()" style="color:var(--neon); background:none; border:none; margin-bottom:20px; cursor:pointer;">◀ CHANGE GAME</button>
         
-        <h2 id="engineTitle" style="color:var(--neon); font-family:'Orbitron';">WINGO 30S</h2>
+        <h1 id="engineTitle" style="color:var(--neon); font-family:'Orbitron';">WINGO 30S</h1>
 
-        <div class="status-header">
-            <div style="text-align:left;">
-                <div style="color:#888; font-size:12px;">PERIOD</div>
-                <div id="periodDisplay" style="font-weight:bold; letter-spacing:1px;">20260415100010001</div>
+        <div class="engine-card">
+            <div class="status-header">
+                <div style="text-align:left;">
+                    <div style="color:#888; font-size:12px;">PERIOD</div>
+                    <div id="periodDisplay" class="period-id">20260415100010001</div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="color:#888; font-size:12px;">TIME</div>
+                    <div id="timerDisplay" class="timer">00:30</div>
+                </div>
             </div>
-            <div style="text-align:right;">
-                <div style="color:#888; font-size:12px;">TIME</div>
-                <div id="timerDisplay" style="color:#ffcc00; font-weight:bold; font-size:18px;">00:30</div>
-            </div>
+
+            <div id="ball" class="ball-engine">?</div>
+            <div id="resTxt" class="res-text">---</div>
+            <button class="main-btn" id="pBtn" onclick="runPrediction()">GET RESULT</button>
         </div>
-
-        <div id="ball" class="ball-engine">?</div>
-        <div id="resTxt" style="font-size:40px; font-weight:900; height:50px; letter-spacing:4px;">---</div>
-
-        <button class="main-predict-btn" id="pBtn" onclick="runPrediction()">START ANALYSIS</button>
+        
+        <p style="margin-top:20px; font-size:10px; color:rgba(0,255,153,0.3);">ENCRYPTED BY ANIMESH V4.0 SYSTEM</p>
     </div>
 
     <script>
-        let mode = '30s';
+        let currentMode = '30s';
+        let attemptsLeft = 3;
 
-        function checkKey() {
-            if(document.getElementById('key').value.length > 3) {
+        function checkLicense() {
+            const key = document.getElementById('license').value;
+            if(key.length >= 10) { // Valid Key Length Check (like XXXX-XXXX-XXXX-XXXX)
                 showScreen('scr-lobby');
+                document.getElementById('err').style.display = 'none';
+            } else {
+                attemptsLeft--;
+                if(attemptsLeft <= 0) {
+                    alert('ACCESS BLOCKED: Device has been locked on server.');
+                    location.reload();
+                } else {
+                    document.getElementById('err').style.display = 'block';
+                    document.getElementById('attempts').innerText = attemptsLeft;
+                }
             }
         }
 
-        function openGame(g) {
-            document.getElementById('engineTitle').innerText = g;
-            mode = g.includes('30S') ? '30s' : '1m';
+        function openGame(game) {
+            document.getElementById('engineTitle').innerText = game;
+            currentMode = game.includes('30S') ? '30s' : '1m';
             showScreen('scr-engine');
             syncData();
         }
 
-        function changeGame() { showScreen('scr-lobby'); }
+        function backToLobby() { showScreen('scr-lobby'); }
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -127,7 +150,7 @@
                 let sec = now.getSeconds();
                 let remain, count;
 
-                if(mode === '30s') {
+                if(currentMode === '30s') {
                     remain = 30 - (sec % 30);
                     count = (now.getHours() * 120) + (now.getMinutes() * 2) + (sec >= 30 ? 1 : 0);
                 } else {
@@ -138,7 +161,7 @@
                 document.getElementById('periodDisplay').innerText = d + "10001" + count.toString().padStart(4, '0');
                 document.getElementById('timerDisplay').innerText = "00:" + (remain < 10 ? "0"+remain : remain);
                 
-                if(remain === (mode==='30s'?30:60)) resetEngine();
+                if(remain === (currentMode === '30s' ? 30 : 60)) resetUI();
             }, 1000);
         }
 
@@ -149,7 +172,10 @@
 
             btn.disabled = true;
             ball.innerText = "⏳";
+            ball.style.boxShadow = "0 0 20px #ffcc00";
+            ball.style.borderColor = "#ffcc00";
             res.innerText = "WAITING";
+            res.style.color = "white";
 
             setTimeout(() => {
                 const n = Math.floor(Math.random() * 10);
@@ -166,7 +192,7 @@
             }, 2500);
         }
 
-        function resetEngine() {
+        function resetUI() {
             const btn = document.getElementById('pBtn');
             btn.disabled = false;
             const ball = document.getElementById('ball');
