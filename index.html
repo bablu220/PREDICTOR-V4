@@ -6,43 +6,42 @@
     <title>PREDICTOR 4.0 | KULAMANI MAHANT</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ff99; --bg: #01080e; --red: #ff3e3e; --green: #00ff73; --violet: #b042ff; }
+        :root { --neon: #00ff99; --bg: #01080e; --red: #ff4d4d; --green: #00ff88; --violet: #b042ff; }
         body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow-x: hidden; }
 
-        /* HACKER BACKGROUND GRAPHICS */
+        /* HACKER UI BACKGROUND */
         .cyber-bg { position: fixed; inset: 0; background: radial-gradient(circle at center, #0a1a2a 0%, #01080e 100%); z-index: -2; }
-        .grid { position: fixed; inset: 0; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05; z-index: -1; animation: move 20s linear infinite; }
-        @keyframes move { from { background-position: 0 0; } to { background-position: 0 1000px; } }
+        .grid { position: fixed; inset: 0; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.05; z-index: -1; }
 
         /* SCREEN SYSTEM */
         .screen { display: none; min-height: 100vh; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box; }
-        .active { display: flex; animation: scanIn 0.3s ease-out; }
-        @keyframes scanIn { from { filter: brightness(3); opacity: 0; } to { filter: brightness(1); opacity: 1; } }
+        .active { display: flex; animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        /* STAGE 1: ACCESS VERIFICATION (Image 17/15 Style) */
-        .auth-container { background: rgba(10, 25, 40, 0.95); border: 1px solid var(--neon); padding: 35px; border-radius: 15px; text-align: center; width: 100%; max-width: 350px; margin-top: 12vh; box-shadow: 0 0 40px rgba(0, 255, 153, 0.2); }
-        .lock-glow { width: 80px; filter: drop-shadow(0 0 10px var(--neon)); margin-bottom: 10px; }
-        .auth-title { font-family: 'Orbitron'; font-weight: 900; font-size: 22px; letter-spacing: 2px; }
-        .key-input { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 6px; margin: 20px 0; text-align: center; font-family: 'Orbitron'; font-size: 14px; }
+        /* LOGIN: image_17.png STYLE */
+        .auth-card { background: rgba(10, 25, 40, 0.98); border: 2px solid var(--neon); padding: 40px; border-radius: 20px; text-align: center; width: 100%; max-width: 350px; margin-top: 10vh; box-shadow: 0 0 50px rgba(0, 255, 153, 0.2); }
+        .lock-icon { width: 90px; filter: drop-shadow(0 0 15px var(--neon)); margin-bottom: 20px; }
+        .auth-input { width: 100%; padding: 15px; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 8px; margin: 20px 0; text-align: center; font-family: 'Orbitron'; letter-spacing: 2px; font-size: 14px; }
 
-        /* STAGE 2: REAL GAME HUB (Multiple Games with Images) */
-        .lobby-header { width: 100%; max-width: 450px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid #333; }
-        .game-grid { width: 100%; max-width: 450px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .game-card { background: #0a1118; border: 1px solid #1a2a3a; border-radius: 15px; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .game-card:hover { border-color: var(--neon); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,255,153,0.1); }
-        .game-card img { width: 60px; height: 60px; border-radius: 12px; margin-bottom: 8px; border: 1px solid #333; }
-        .game-card b { display: block; font-size: 14px; color: #fff; text-transform: uppercase; }
+        /* LOBBY: image_12.png STYLE (BIG CARDS) */
+        .header-bar { width: 100%; max-width: 450px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border: 1px solid #222; }
+        .game-grid { width: 100%; max-width: 450px; display: grid; grid-template-columns: 1fr; gap: 15px; padding-bottom: 50px; }
+        .game-card { background: linear-gradient(90deg, #0a1118 0%, #162536 100%); border: 1px solid #1a2a3a; border-radius: 15px; padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 20px; transition: 0.3s; }
+        .game-card:hover { border-color: var(--neon); box-shadow: 0 0 20px rgba(0,255,153,0.1); }
+        .game-card img { width: 70px; height: 70px; border-radius: 12px; border: 2px solid #333; background: #fff; }
+        .game-card div b { font-size: 20px; font-family: 'Orbitron'; color: #fff; }
+        .game-card div p { margin: 5px 0 0; color: var(--neon); font-size: 12px; font-weight: bold; }
 
-        /* STAGE 3: PREDICTION ENGINE (Image 16 Style) */
-        .engine-card { background: #070f18; border: 1px solid var(--neon); padding: 25px; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; position: relative; }
-        .badge-live { position: absolute; top: -10px; right: 20px; background: var(--green); color: black; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; }
-        .period-box { display: flex; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; margin: 15px 0; border: 1px solid #222; }
-        .ball-display { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #444, #000); border: 5px solid #333; margin: 25px auto; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 900; font-family: 'Orbitron'; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        /* ENGINE: image_16.png STYLE */
+        .engine-card { background: #070f18; border: 2px solid var(--neon); padding: 30px; border-radius: 25px; width: 100%; max-width: 400px; text-align: center; position: relative; }
+        .live-tag { position: absolute; top: 15px; right: 20px; color: var(--green); font-weight: bold; font-size: 12px; }
+        .period-info { display: flex; justify-content: space-between; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; margin: 20px 0; border: 1px solid #222; }
+        .ball-main { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #555, #000); border: 6px solid #333; margin: 30px auto; display: flex; align-items: center; justify-content: center; font-size: 70px; font-weight: 900; font-family: 'Orbitron'; text-shadow: 0 0 20px rgba(255,255,255,0.2); }
 
         /* BUTTONS */
-        .btn-glow { width: 100%; padding: 15px; border-radius: 8px; border: none; background: var(--neon); color: black; font-weight: 900; cursor: pointer; font-family: 'Orbitron'; letter-spacing: 1px; transition: 0.3s; }
-        .btn-glow:hover { box-shadow: 0 0 20px var(--neon); }
-        .btn-back { background: none; border: 1px solid #444; color: #888; padding: 6px 15px; border-radius: 5px; cursor: pointer; margin-bottom: 15px; font-size: 12px; }
+        .btn-pro { width: 100%; padding: 18px; border-radius: 10px; border: none; background: var(--neon); color: black; font-weight: 900; cursor: pointer; font-family: 'Orbitron'; font-size: 16px; text-transform: uppercase; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn-pro:active { transform: scale(0.98); }
+        .btn-back { background: none; border: 1px solid #444; color: #888; padding: 8px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -50,140 +49,148 @@
     <div class="grid"></div>
 
     <div id="scr-login" class="screen active">
-        <div class="auth-container">
-            <img src="https://img.icons8.com/neon-gradient/96/lock.png" class="lock-glow">
-            <div class="auth-title">ACCESS</div>
-            <div class="auth-title" style="color:var(--neon)">VERIFICATION</div>
-            <p style="font-size:11px; color:#555; margin-top:5px;">AUTHORIZATION KEY REQUIRED</p>
-            <input type="text" id="license" class="key-input" placeholder="ENTER LICENSE KEY">
-            <button class="btn-glow" onclick="validateKey()">VALIDATE KEY</button>
-            <p style="font-size:10px; color:#333; margin-top:15px;">DEVICE ID: LOCKED (Attempt 3/3)</p>
+        <div class="auth-card">
+            <img src="https://img.icons8.com/neon-gradient/96/lock.png" class="lock-icon">
+            <h1 style="font-family:'Orbitron'; margin:0; letter-spacing:3px;">ACCESS</h1>
+            <h1 style="font-family:'Orbitron'; color:var(--neon); margin:0;">VERIFICATION</h1>
+            <input type="text" id="licenseKey" class="auth-input" placeholder="ENTER LICENSE KEY">
+            <button class="btn-pro" onclick="handleLogin()">VALIDATE KEY</button>
+            <p id="loginError" style="color:red; font-size:12px; margin-top:10px; display:none;">INVALID OR EXPIRED LICENSE KEY</p>
         </div>
     </div>
 
     <div id="scr-hub" class="screen">
-        <div class="lobby-header">
-            <div><span style="color:#777">Admin:</span> <span id="userName" style="color:var(--neon); font-weight:bold; font-family:'Orbitron'">KULAMANI</span></div>
-            <div style="font-size:11px; color:var(--green); animation: pulse 1.5s infinite;">● SERVER: ACTIVE</div>
+        <div class="header-bar">
+            <div><span style="color:#777">USER:</span> <span id="displayName" style="color:var(--neon); font-weight:bold; font-family:'Orbitron'">---</span></div>
+            <div style="font-size:11px; color:var(--green);">● SYSTEM ONLINE</div>
         </div>
         
         <div class="game-grid">
-            <div class="game-card" onclick="startApp('LOTTERY 7')">
-                <img src="https://img.icons8.com/fluency/96/7.png"><b>Lottery 7</b>
+            <div class="game-card" onclick="openEngine('LOTTERY 7', 'L7')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6mXmYmO-3I5y7eYyBv_Vv5C8vU_U3WqB5vg&s">
+                <div><b>Lottery 7</b><p>SERVER CONNECTED</p></div>
             </div>
-            <div class="game-card" onclick="startApp('SIKKIM GAME')">
-                <img src="https://img.icons8.com/fluency/96/crown.png"><b>Sikkim Game</b>
+            <div class="game-card" onclick="openEngine('SIKKIM GAME', 'SK')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7lR9-Q-2-K-B-p-o-x-x-x-x-x-x-x-x-x-x&s">
+                <div><b>Sikkim Game</b><p>SERVER CONNECTED</p></div>
             </div>
-            <div class="game-card" onclick="startApp('GOA GAME')">
-                <img src="https://img.icons8.com/fluency/96/beach.png"><b>Goa Game</b>
+            <div class="game-card" onclick="openEngine('GOA GAME', 'GOA')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx-X-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x-x&s">
+                <div><b>Goa Game</b><p>SERVER CONNECTED</p></div>
             </div>
-            <div class="game-card" onclick="startApp('TIRANGA GAME')">
-                <img src="https://img.icons8.com/color/96/india.png"><b>Tiranga</b>
-            </div>
-            <div class="game-card" onclick="startApp('BDG WIN')">
-                <img src="https://img.icons8.com/fluency/96/diamond.png"><b>BDG Win</b>
-            </div>
-            <div class="game-card" onclick="startApp('DAMAN GAMES')">
-                <img src="https://img.icons8.com/fluency/96/clover.png"><b>Daman</b>
+            <div class="game-card" onclick="openEngine('TIRANGA', 'TRG')">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREq8eF_yv7N7t6l6l6l6l6l6l6l6l6l6l&s">
+                <div><b>Tiranga Game</b><p>SERVER CONNECTED</p></div>
             </div>
         </div>
     </div>
 
     <div id="scr-engine" class="screen">
-        <button class="btn-back" onclick="goToHub()">◀ BACK TO SERVER HUB</button>
+        <button class="btn-back" onclick="showScreen('scr-hub')">◀ CHANGE SERVER</button>
         <div class="engine-card">
-            <div class="badge-live">LIVE SYNC</div>
-            <h2 id="activeGame" style="color:var(--neon); font-family:'Orbitron'; margin:0;">GAME</h2>
+            <div class="live-tag">● LIVE SYNC</div>
+            <h2 id="currentTitle" style="color:var(--neon); font-family:'Orbitron'; margin:0;">GAME</h2>
             
-            <div class="period-box">
-                <div style="text-align:left;"><small style="color:#666">PERIOD</small><br><b id="periodId" style="letter-spacing:1px;">---</b></div>
-                <div style="text-align:right;"><small style="color:#666">TIMER</small><br><b id="timer" style="color:#ffcc00; font-size:20px;">00:30</b></div>
+            <div class="period-info">
+                <div style="text-align:left;"><small style="color:#666">PERIOD</small><br><b id="pID" style="font-size:14px;">---</b></div>
+                <div style="text-align:right;"><small style="color:#666">TIME</small><br><b id="timer" style="color:#ffcc00; font-size:22px;">00:30</b></div>
             </div>
 
-            <div id="ball" class="ball-display">?</div>
-            <div id="resultText" style="font-size:40px; font-weight:900; letter-spacing:6px; height:50px; text-transform:uppercase;">---</div>
+            <div id="ball" class="ball-main">?</div>
+            <div id="resTxt" style="font-size:45px; font-weight:900; height:55px; letter-spacing:5px;">---</div>
 
             <div style="display:flex; gap:10px; margin:20px 0;">
-                <button class="btn-glow" style="background:#111; color:var(--neon); border:1px solid var(--neon); padding:10px;" onclick="setTimer(30)">WINGO 30S</button>
-                <button class="btn-glow" style="background:#111; color:var(--neon); border:1px solid var(--neon); padding:10px;" onclick="setTimer(60)">WINGO 1M</button>
+                <button class="btn-pro" style="background:#111; color:var(--neon); border:1px solid var(--neon); font-size:12px;" onclick="setMode(30)">30 SEC</button>
+                <button class="btn-pro" style="background:#111; color:var(--neon); border:1px solid var(--neon); font-size:12px;" onclick="setMode(60)">1 MIN</button>
             </div>
 
-            <button class="btn-glow" id="predictBtn" onclick="getPrediction()">GET PREDICTION</button>
+            <button class="btn-pro" id="predictBtn" onclick="runAnalysis()">GET PREDICTION</button>
         </div>
-        <p style="margin-top:20px; font-size:10px; color:rgba(0,255,153,0.2);">SECURED BY ANIMESH TRADER V4.0</p>
+        <p style="margin-top:20px; font-size:10px; color:rgba(0,255,153,0.3);">POWERED BY ANIMESH V4.0 SYSTEM</p>
     </div>
 
     <script>
-        let currentTimer = 30;
-        function validateKey() {
-            const key = document.getElementById('license').value;
-            if(key.length > 2) {
-                document.getElementById('scr-login').classList.remove('active');
-                document.getElementById('scr-hub').classList.add('active');
+        // 1. KEY DATABASE (Key: Name)
+        const userDB = {
+            "KULA-1234": "KULAMANI",
+            "ADMIN-99": "MASTER ADMIN",
+            "ANIMESH": "ANIMESH TRADER"
+        };
+
+        let activeMode = 30;
+
+        function handleLogin() {
+            const key = document.getElementById('licenseKey').value.toUpperCase();
+            if(userDB[key]) {
+                document.getElementById('displayName').innerText = userDB[key];
+                showScreen('scr-hub');
+            } else {
+                document.getElementById('loginError').style.display = 'block';
             }
         }
 
-        function startApp(gameName) {
-            document.getElementById('activeGame').innerText = gameName;
-            document.getElementById('scr-hub').classList.remove('active');
-            document.getElementById('scr-engine').classList.add('active');
-            startLiveSync();
+        function openEngine(name, code) {
+            document.getElementById('currentTitle').innerText = name;
+            showScreen('scr-engine');
+            syncClock();
         }
 
-        function goToHub() {
-            document.getElementById('scr-engine').classList.remove('active');
-            document.getElementById('scr-hub').classList.add('active');
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
 
-        function setTimer(t) { currentTimer = t; resetBall(); }
+        function setMode(m) { activeMode = m; resetBall(); }
 
-        function startLiveSync() {
+        // 2. PERIOD SYNC LOGIC (Exact match for real games)
+        function syncClock() {
             setInterval(() => {
                 const now = new Date();
-                const dateStr = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0');
-                let seconds = now.getSeconds();
-                let remaining = currentTimer === 30 ? 30 - (seconds % 30) : 60 - seconds;
-                let periodCount = currentTimer === 30 ? (now.getHours()*120 + now.getMinutes()*2 + (seconds>=30?1:0)) : (now.getHours()*60 + now.getMinutes());
+                const d = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0');
+                let sec = now.getSeconds();
+                let rem = activeMode === 30 ? 30 - (sec % 30) : 60 - sec;
                 
-                document.getElementById('periodId').innerText = dateStr + "10001" + periodCount.toString().padStart(4, '0');
-                document.getElementById('timer').innerText = "00:" + (remaining < 10 ? "0"+remaining : remaining);
+                // Real Period Count Logic
+                let count = activeMode === 30 ? (now.getHours()*120 + now.getMinutes()*2 + (sec>=30?1:0)) : (now.getHours()*60 + now.getMinutes());
                 
-                if(remaining === (currentTimer)) resetBall();
+                document.getElementById('pID').innerText = d + "10005" + count.toString().padStart(4, '0');
+                document.getElementById('timer').innerText = "00:" + (rem < 10 ? "0"+rem : rem);
+                
+                if(rem === activeMode) resetBall();
             }, 1000);
         }
 
-        function getPrediction() {
+        function runAnalysis() {
             const btn = document.getElementById('predictBtn');
             const ball = document.getElementById('ball');
-            const res = document.getElementById('resultText');
+            const res = document.getElementById('resTxt');
             
             btn.disabled = true;
             ball.innerText = "⏳";
-            res.innerText = "WAITING";
-            res.style.color = "white";
+            res.innerText = "SYNCING";
 
             setTimeout(() => {
-                const num = Math.floor(Math.random() * 10);
-                const isBig = num >= 5;
-                let color = (num % 2 === 0) ? "var(--red)" : "var(--green)";
-                if(num === 0 || num === 5) color = "var(--violet)";
+                const n = Math.floor(Math.random() * 10);
+                const isBig = n >= 5;
+                let c = (n % 2 === 0) ? "var(--red)" : "var(--green)";
+                if(n === 0 || n === 5) c = "var(--violet)";
                 
-                ball.innerText = num;
-                ball.style.background = color;
-                ball.style.boxShadow = `0 0 30px ${color}`;
+                ball.innerText = n;
+                ball.style.background = c;
+                ball.style.boxShadow = `0 0 30px ${c}`;
                 res.innerText = isBig ? "BIG" : "SMALL";
-                res.style.color = color;
-            }, 2500);
+                res.style.color = c;
+            }, 2000);
         }
 
         function resetBall() {
             document.getElementById('predictBtn').disabled = false;
             const ball = document.getElementById('ball');
             ball.innerText = "?";
-            ball.style.background = "radial-gradient(circle at 30% 30%, #444, #000)";
+            ball.style.background = "radial-gradient(circle at 35% 35%, #555, #000)";
             ball.style.boxShadow = "none";
-            document.getElementById('resultText').innerText = "---";
-            document.getElementById('resultText').style.color = "white";
+            document.getElementById('resTxt').innerText = "---";
+            document.getElementById('resTxt').style.color = "white";
         }
     </script>
 </body>
