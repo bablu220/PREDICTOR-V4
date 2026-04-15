@@ -1,35 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>ADMIN KEY MAKER - V4</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI PREDICTOR V4.0 | KULAMANI</title>
     <style>
-        body { background: #050a10; color: #00ff99; font-family: sans-serif; text-align: center; padding: 50px; }
-        .box { border: 2px solid #00ff99; padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 0 20px #00ff99; }
-        input { padding: 10px; width: 250px; background: transparent; border: 1px solid #00ff99; color: white; text-align: center; }
-        button { background: #00ff99; color: black; padding: 10px 20px; border: none; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        :root { --neon: #00ff99; --bg: #050a10; --red: #ff3333; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
+        
+        /* Login Page Styling */
+        #login-page { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
+        .login-box { border: 1px solid var(--neon); padding: 30px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,255,153,0.3); width: 85%; max-width: 400px; }
+        input { width: 90%; padding: 15px; margin: 20px 0; background: transparent; border: 2px solid var(--neon); color: white; border-radius: 10px; text-align: center; font-size: 18px; letter-spacing: 2px; }
+        .btn { background: var(--neon); color: black; padding: 15px 40px; border: none; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; }
+
+        /* Dashboard Styling */
+        #dashboard { display: none; padding: 10px; }
+        .header { padding: 15px; border-bottom: 2px solid var(--neon); margin-bottom: 20px; text-shadow: 0 0 10px var(--neon); }
+        .game-card { border: 1px solid #333; margin: 10px; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.05); }
+        
+        /* Prediction Ball Animation */
+        .ball-area { height: 120px; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .ball { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--neon); display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 900; transition: 0.5s; }
+        .spinning { animation: rotate 0.2s infinite linear; border-style: dashed; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .status-text { font-size: 22px; font-weight: bold; margin-top: 10px; min-height: 30px; }
+        .timer { font-size: 35px; color: #ffcc00; margin: 10px 0; font-family: monospace; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>💎 ADMIN KEY MAKER</h2>
-        <input type="text" id="genKey" readonly placeholder="Key Yahan Ayegi">
-        <br>
-        <button onclick="generate16DigitKey()">GENERATE NEW KEY</button>
+
+    <div id="login-page">
+        <div class="login-box">
+            <h1 style="color:var(--neon)">V4.0 LOGIN</h1>
+            <p>Enter 16-Digit License Key</p>
+            <input type="text" id="keyInput" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19">
+            <button class="btn" onclick="checkKey()">ACTIVATE SYSTEM</button>
+            <p id="errorMsg" style="color:red; margin-top:10px; display:none;">INVALID LICENSE KEY!</p>
+        </div>
+    </div>
+
+    <div id="dashboard">
+        <div class="header"><h2>AI PREDICTOR PRO 🧩</h2></div>
+        
+        <div class="game-card">
+            <div id="timer" class="timer">00:00</div>
+            <div style="color:#888; font-size:12px;">PERIOD: <span id="period">202604151000</span></div>
+
+            <div class="ball-area">
+                <div id="ball" class="ball">?</div>
+            </div>
+            
+            <div id="status" class="status-text">READY FOR ANALYSIS</div>
+            <button class="btn" id="predBtn" onclick="getPrediction()" style="margin-top:20px;">GET PREDICTION</button>
+        </div>
+
+        <div style="margin-top:20px; color:#444; font-size:10px;">CONNECTED TO SERVER: SECURE-V4</div>
     </div>
 
     <script>
-        function generate16DigitKey() {
-            // Animesh Trader style 16-digit generator (XXXX-XXXX-XXXX-XXXX)
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            let key = "";
-            for (let i = 0; i < 16; i++) {
-                if (i > 0 && i % 4 === 0) key += "-";
-                key += chars.charAt(Math.floor(Math.random() * chars.length));
+        // 1. LOGIN SYSTEM
+        function checkKey() {
+            const key = document.getElementById('keyInput').value;
+            // Ye check karega ki format XXXX-XXXX-XXXX-XXXX hai ya nahi
+            if(key.length >= 16) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                startGlobalTimer();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
             }
-            document.getElementById('genKey').value = key;
-            
-            // Yahan code aayega jo is key ko Firebase mein save karega
-            alert("Mubarak ho! Key " + key + " ab active hai."); 
+        }
+
+        // 2. PERIOD & TIMER LOGIC
+        function startGlobalTimer() {
+            setInterval(() => {
+                const now = new Date();
+                const seconds = now.getSeconds();
+                const remaining = 60 - seconds;
+                document.getElementById('timer').innerText = "00:" + (remaining < 10 ? "0" + remaining : remaining);
+                
+                // Period Number Auto-Update
+                const pTime = now.getHours().toString().padStart(2,'0') + now.getMinutes().toString().padStart(2,'0');
+                document.getElementById('period').innerText = "20260415" + pTime;
+
+                if(remaining === 60) {
+                    resetUI();
+                }
+            }, 1000);
+        }
+
+        // 3. PREDICTION ANIMATION (Animesh Trader Style)
+        function getPrediction() {
+            const ball = document.getElementById('ball');
+            const status = document.getElementById('status');
+            const btn = document.getElementById('predBtn');
+
+            btn.disabled = true;
+            ball.classList.add('spinning');
+            ball.innerText = "?";
+            ball.style.borderColor = "var(--neon)";
+            status.innerText = "ANALYZING SERVER...";
+            status.style.color = "white";
+
+            setTimeout(() => {
+                ball.classList.remove('spinning');
+                const num = Math.floor(Math.random() * 10); // 0 to 9
+                const res = (num >= 5) ? "BIG" : "SMALL";
+                const color = (num % 2 === 0) ? "#ff3333" : "#00ff99"; // Red for Even, Green for Odd
+
+                ball.innerText = num;
+                ball.style.borderColor = color;
+                ball.style.boxShadow = "0 0 20px " + color;
+                
+                status.innerText = res;
+                status.style.color = color;
+            }, 3000);
+        }
+
+        function resetUI() {
+            document.getElementById('predBtn').disabled = false;
+            document.getElementById('ball').innerText = "?";
+            document.getElementById('ball').style.boxShadow = "none";
+            document.getElementById('status').innerText = "READY FOR NEXT ROUND";
         }
     </script>
 </body>
