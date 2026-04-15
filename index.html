@@ -3,150 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDICTOR 4.0 | ULTIMATE SYNC</title>
+    <title>AI PREDICTOR V4.0 | KULAMANI</title>
     <style>
-        :root { --neon: #00ff99; --bg: #050a10; --red: #ff4d4d; --green: #2ecc71; --violet: #b366ff; }
+        :root { --neon: #00ff99; --bg: #050a10; --red: #ff3333; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
         
-        body { 
-            background: var(--bg); color: white; font-family: 'Orbitron', sans-serif; 
-            margin: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center;
-        }
+        /* Login Page Styling */
+        #login-page { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
+        .login-box { border: 1px solid var(--neon); padding: 30px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,255,153,0.3); width: 85%; max-width: 400px; }
+        input { width: 90%; padding: 15px; margin: 20px 0; background: transparent; border: 2px solid var(--neon); color: white; border-radius: 10px; text-align: center; font-size: 18px; letter-spacing: 2px; }
+        .btn { background: var(--neon); color: black; padding: 15px 40px; border: none; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%; font-size: 16px; }
 
-        /* PREDICTOR 4.0 ANIMATED BG */
-        .bg-lines {
-            position: fixed; inset: 0; z-index: -1;
-            background-image: linear-gradient(var(--bg) 95%, var(--neon) 95%), linear-gradient(90deg, var(--bg) 95%, var(--neon) 95%);
-            background-size: 40px 40px; opacity: 0.1; animation: gridMove 3s linear infinite;
-        }
-        @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 40px; } }
+        /* Dashboard Styling */
+        #dashboard { display: none; padding: 10px; }
+        .header { padding: 15px; border-bottom: 2px solid var(--neon); margin-bottom: 20px; text-shadow: 0 0 10px var(--neon); }
+        .game-card { border: 1px solid #333; margin: 10px; padding: 15px; border-radius: 15px; background: rgba(255,255,255,0.05); }
+        
+        /* Prediction Ball Animation */
+        .ball-area { height: 120px; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .ball { width: 80px; height: 80px; border-radius: 50%; border: 4px solid var(--neon); display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 900; transition: 0.5s; }
+        .spinning { animation: rotate 0.2s infinite linear; border-style: dashed; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
 
-        /* HEADER */
-        .header { 
-            width: 100%; padding: 20px 0; background: rgba(0,255,153,0.1); 
-            border-bottom: 2px solid var(--neon); text-align: center;
-            font-size: 24px; font-weight: 900; color: var(--neon); letter-spacing: 5px;
-            box-shadow: 0 0 20px var(--neon);
-        }
-
-        /* PERIOD BOX - MATCHED EXACTLY */
-        .status-container {
-            width: 90%; background: rgba(22, 29, 38, 0.9); margin-top: 20px;
-            padding: 15px; border-radius: 15px; border: 1px solid #333;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .p-label { color: #888; font-size: 12px; margin-bottom: 5px; }
-        .p-id { font-size: 18px; font-weight: bold; color: #fff; letter-spacing: 1px; }
-        .timer { font-size: 26px; font-weight: bold; color: #ffcc00; text-shadow: 0 0 10px #ffcc00; }
-
-        /* ACTUAL GAME BALLS */
-        .prediction-area { margin: 40px 0; position: relative; }
-        .ball {
-            width: 100px; height: 100px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 55px; font-weight: 900; color: white;
-            background: radial-gradient(circle at 30% 30%, #555, #000);
-            border: 5px solid #444; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-        .shuffle { animation: ballJump 0.2s infinite alternate; }
-        @keyframes ballJump { to { transform: translateY(-15px); } }
-
-        .res-text { font-size: 40px; font-weight: 900; margin-top: 20px; letter-spacing: 6px; height: 50px; }
-
-        /* PREDICT BUTTON */
-        .btn-predict {
-            width: 85%; padding: 18px; border-radius: 50px; border: none;
-            background: linear-gradient(180deg, var(--neon), #00804d);
-            color: black; font-size: 20px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 0 20px rgba(0,255,153,0.4); transition: 0.3s;
-        }
-        .btn-predict:disabled { background: #333; color: #666; box-shadow: none; cursor: not-allowed; }
+        .status-text { font-size: 22px; font-weight: bold; margin-top: 10px; min-height: 30px; }
+        .timer { font-size: 35px; color: #ffcc00; margin: 10px 0; font-family: monospace; }
     </style>
 </head>
 <body>
 
-    <div class="bg-lines"></div>
-    <div class="header">PREDICTOR 4.0</div>
-
-    <div class="status-container">
-        <div style="text-align:left">
-            <div class="p-label">Period Number</div>
-            <div id="period" class="p-id">20260415100010001</div>
+    <div id="login-page">
+        <div class="login-box">
+            <h1 style="color:var(--neon)">V4.0 LOGIN</h1>
+            <p>Enter 16-Digit License Key</p>
+            <input type="text" id="keyInput" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19">
+            <button class="btn" onclick="checkKey()">ACTIVATE SYSTEM</button>
+            <p id="errorMsg" style="color:red; margin-top:10px; display:none;">INVALID LICENSE KEY!</p>
         </div>
-        <div id="timer" class="timer">00:60</div>
     </div>
 
-    <div class="prediction-area">
-        <div id="ball" class="ball">?</div>
+    <div id="dashboard">
+        <div class="header"><h2>AI PREDICTOR PRO 🧩</h2></div>
+        
+        <div class="game-card">
+            <div id="timer" class="timer">00:00</div>
+            <div style="color:#888; font-size:12px;">PERIOD: <span id="period">202604151000</span></div>
+
+            <div class="ball-area">
+                <div id="ball" class="ball">?</div>
+            </div>
+            
+            <div id="status" class="status-text">READY FOR ANALYSIS</div>
+            <button class="btn" id="predBtn" onclick="getPrediction()" style="margin-top:20px;">GET PREDICTION</button>
+        </div>
+
+        <div style="margin-top:20px; color:#444; font-size:10px;">CONNECTED TO SERVER: SECURE-V4</div>
     </div>
-
-    <div id="result" class="res-text">---</div>
-
-    <button class="btn-predict" id="pBtn" onclick="doProfessionalPredict()">START ANALYSIS</button>
 
     <script>
-        // PERIOD MATCHING LOGIC (Custom for your game)
-        function updateGameData() {
-            const now = new Date();
-            const datePart = now.getFullYear().toString() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
-            
-            // Period Sync: Using your specific ID format 10001XXXX
-            const totalMins = (now.getHours() * 60) + now.getMinutes();
-            const periodID = datePart + "10001" + (1000 + totalMins).toString().slice(1);
-            document.getElementById('period').innerText = periodID;
-
-            const seconds = now.getSeconds();
-            const remain = 60 - seconds;
-            document.getElementById('timer').innerText = "00:" + (remain < 10 ? "0" + remain : remain);
-            
-            if(remain === 60) resetForNewRound();
+        // 1. LOGIN SYSTEM
+        function checkKey() {
+            const key = document.getElementById('keyInput').value;
+            // Ye check karega ki format XXXX-XXXX-XXXX-XXXX hai ya nahi
+            if(key.length >= 16) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                startGlobalTimer();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+            }
         }
-        setInterval(updateGameData, 1000);
 
-        function doProfessionalPredict() {
+        // 2. PERIOD & TIMER LOGIC
+        function startGlobalTimer() {
+            setInterval(() => {
+                const now = new Date();
+                const seconds = now.getSeconds();
+                const remaining = 60 - seconds;
+                document.getElementById('timer').innerText = "00:" + (remaining < 10 ? "0" + remaining : remaining);
+                
+                // Period Number Auto-Update
+                const pTime = now.getHours().toString().padStart(2,'0') + now.getMinutes().toString().padStart(2,'0');
+                document.getElementById('period').innerText = "20260415" + pTime;
+
+                if(remaining === 60) {
+                    resetUI();
+                }
+            }, 1000);
+        }
+
+        // 3. PREDICTION ANIMATION (Animesh Trader Style)
+        function getPrediction() {
             const ball = document.getElementById('ball');
-            const res = document.getElementById('result');
-            const btn = document.getElementById('pBtn');
+            const status = document.getElementById('status');
+            const btn = document.getElementById('predBtn');
 
             btn.disabled = true;
-            ball.classList.add('shuffle');
+            ball.classList.add('spinning');
             ball.innerText = "?";
-            res.innerText = "WAITING...";
-            res.style.color = "#888";
+            ball.style.borderColor = "var(--neon)";
+            status.innerText = "ANALYZING SERVER...";
+            status.style.color = "white";
 
             setTimeout(() => {
-                ball.classList.remove('shuffle');
-                const num = Math.floor(Math.random() * 10);
-                const isBig = num >= 5;
-                
-                // EXACT COLOR BALL LOGIC
-                let color;
-                if(num === 0 || num === 5) {
-                    color = "var(--violet)"; // Special for 0 and 5
-                    ball.style.background = `linear-gradient(135deg, ${num===0?'var(--red)':'var(--green)'} 50%, var(--violet) 50%)`;
-                } else {
-                    color = (num % 2 === 0) ? "var(--red)" : "var(--green)";
-                    ball.style.background = color;
-                }
+                ball.classList.remove('spinning');
+                const num = Math.floor(Math.random() * 10); // 0 to 9
+                const res = (num >= 5) ? "BIG" : "SMALL";
+                const color = (num % 2 === 0) ? "#ff3333" : "#00ff99"; // Red for Even, Green for Odd
 
                 ball.innerText = num;
-                ball.style.borderColor = "#fff";
-                ball.style.boxShadow = `0 0 40px ${color}`;
+                ball.style.borderColor = color;
+                ball.style.boxShadow = "0 0 20px " + color;
                 
-                res.innerText = isBig ? "BIG" : "SMALL";
-                res.style.color = color;
+                status.innerText = res;
+                status.style.color = color;
             }, 3000);
         }
 
-        function resetForNewRound() {
-            const btn = document.getElementById('pBtn');
-            btn.disabled = false;
-            const ball = document.getElementById('ball');
-            ball.innerText = "?";
-            ball.style.background = "radial-gradient(circle at 30% 30%, #555, #000)";
-            ball.style.boxShadow = "none";
-            ball.style.borderColor = "#444";
-            document.getElementById('result').innerText = "---";
-            document.getElementById('result').style.color = "white";
+        function resetUI() {
+            document.getElementById('predBtn').disabled = false;
+            document.getElementById('ball').innerText = "?";
+            document.getElementById('ball').style.boxShadow = "none";
+            document.getElementById('status').innerText = "READY FOR NEXT ROUND";
         }
     </script>
 </body>
