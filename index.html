@@ -3,137 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDICTOR 4.0 | MASTER ADMIN</title>
+    <title>PREDICTOR 4.0 | OFFICIAL BOT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --neon: #00ff99; --bg: #03080e; --card: #111a24; --gold: #ffcc00; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; overflow-x: hidden; }
+        :root { --neon: #00ff99; --bg: #02060b; --red: #ff3e3e; --green: #00ff73; --violet: #b042ff; }
+        body { background: var(--bg); color: white; font-family: 'Rajdhani', sans-serif; margin: 0; overflow: hidden; }
 
-        /* 1. ANIMATED BACKGROUND GRAPHICS */
-        .grid-bg { position: fixed; inset: 0; background: linear-gradient(rgba(0,255,153,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,153,0.05) 1px, transparent 1px); background-size: 40px 40px; z-index: -1; animation: move 10s linear infinite; }
-        @keyframes move { from { background-position: 0 0; } to { background-position: 0 40px; } }
+        /* GRAPHIC BACKGROUND */
+        .grid { position: fixed; inset: 0; background-image: linear-gradient(var(--neon) 1px, transparent 1px), linear-gradient(90deg, var(--neon) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.05; z-index: -1; animation: move 20s linear infinite; }
+        @keyframes move { from { background-position: 0 0; } to { background-position: 0 1000px; } }
 
-        /* 2. FLOW SCREENS */
-        .screen { display: none; padding: 20px; animation: fadeIn 0.5s ease; }
-        .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* SCREENS */
+        .screen { display: none; height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .active { display: flex; }
 
-        /* 3. ADMIN PANEL STYLE */
-        .admin-tag { position: fixed; top: 10px; right: 10px; background: red; padding: 5px 10px; font-size: 10px; font-weight: bold; border-radius: 5px; z-index: 100; }
+        /* KEY LOGIN SCREEN */
+        .login-card { background: rgba(10, 20, 30, 0.9); border: 2px solid var(--neon); padding: 40px; border-radius: 20px; box-shadow: 0 0 30px rgba(0, 255, 153, 0.3); text-align: center; width: 100%; max-width: 350px; }
+        .input-key { width: 100%; padding: 15px; background: transparent; border: 1px solid var(--neon); color: var(--neon); border-radius: 10px; margin: 20px 0; text-align: center; font-family: 'Orbitron'; letter-spacing: 2px; box-sizing: border-box; }
 
-        /* 4. BUTTONS & CARDS */
-        .glass-card { background: rgba(17, 26, 36, 0.9); border: 1px solid var(--neon); padding: 30px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,255,153,0.2); margin: 20px auto; max-width: 400px; }
-        .game-btn { width: 100%; padding: 20px; margin: 10px 0; background: #1a242c; border: 1px solid #333; color: white; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: bold; text-align: left; display: flex; justify-content: space-between; }
-        .game-btn:hover { border-color: var(--neon); background: rgba(0,255,153,0.1); }
+        /* LOBBY SCREEN */
+        .lobby-title { font-family: 'Orbitron'; color: var(--neon); font-size: 24px; margin-bottom: 30px; text-shadow: 0 0 10px var(--neon); }
+        .game-card { width: 100%; max-width: 320px; background: #111; border: 1px solid #333; padding: 20px; margin: 10px 0; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.3s; }
+        .game-card:hover { border-color: var(--neon); background: rgba(0, 255, 153, 0.1); transform: scale(1.02); }
+
+        /* ENGINE SCREEN */
+        .status-header { width: 100%; max-width: 380px; display: flex; justify-content: space-between; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; }
+        .ball-engine { width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #555, #000); border: 5px solid #444; display: flex; align-items: center; justify-content: center; font-size: 60px; font-weight: 900; font-family: 'Orbitron'; margin: 30px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
         
-        .main-btn { width: 100%; padding: 15px; border-radius: 50px; border: none; background: var(--neon); color: black; font-weight: 900; font-size: 18px; cursor: pointer; box-shadow: 0 5px 15px rgba(0,255,153,0.4); }
-
-        /* 5. BALL GRAPHICS */
-        .ball { width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #555, #000); margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: 900; border: 5px solid #444; }
+        .main-btn { width: 100%; max-width: 320px; padding: 18px; border-radius: 50px; border: none; background: var(--neon); color: black; font-weight: 900; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px var(--neon); font-family: 'Orbitron'; }
+        
+        .admin-badge { position: absolute; top: 15px; right: 15px; background: #ff0000; padding: 5px 10px; border-radius: 5px; font-size: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="grid-bg"></div>
-    <div class="admin-tag">ADMIN ACCESS: ACTIVE</div>
 
-    <div id="screen-login" class="screen active">
-        <div class="glass-card" style="margin-top: 100px;">
-            <h1 style="color:var(--neon); text-align:center;">V4.0 ACCESS</h1>
-            <p style="color:#888; text-align:center;">Enter License Key to Bypass</p>
-            <input type="text" id="licenseKey" style="width:90%; padding:15px; margin:20px 0; background:transparent; border:1px solid var(--neon); color:white; text-align:center; border-radius:10px;" placeholder="XXXX-XXXX-XXXX">
-            <button class="main-btn" onclick="goToLobby()">AUTHENTICATE</button>
+    <div class="grid"></div>
+
+    <div id="scr-login" class="screen active">
+        <div class="login-card">
+            <h1 style="color:var(--neon); font-family:'Orbitron';">BOT V4.0</h1>
+            <input type="text" id="license" class="input-key" placeholder="ENTER ACCESS KEY">
+            <button class="main-btn" onclick="checkKey()">ACTIVATE SYSTEM</button>
         </div>
     </div>
 
-    <div id="screen-lobby" class="screen">
-        <h2 style="text-align:center; color:var(--neon);">SELECT SERVER</h2>
-        <div style="max-width:400px; margin:auto;">
-            <div class="game-btn" onclick="openGame('WINGO 30S')">WINGO 30 SEC <span>➔</span></div>
-            <div class="game-btn" onclick="openGame('WINGO 1M')">WINGO 1 MIN <span>➔</span></div>
-            <div class="game-btn" onclick="openGame('WINGO 3M')">WINGO 3 MIN <span>➔</span></div>
-            <div class="game-btn" onclick="openGame('WINGO 5M')">WINGO 5 MIN <span>➔</span></div>
+    <div id="scr-lobby" class="screen">
+        <h1 class="lobby-title">SELECT SERVER</h1>
+        <div class="game-card" onclick="startEngine('WINGO 30S')">
+            <div><span style="color:var(--neon)">●</span> WINGO 30 SEC</div> <span>➔</span>
         </div>
-        <button onclick="location.reload()" style="background:none; border:none; color:red; margin-top:20px; cursor:pointer;">LOGOUT</button>
+        <div class="game-card" onclick="startEngine('WINGO 1M')">
+            <div><span style="color:var(--neon)">●</span> WINGO 1 MIN</div> <span>➔</span>
+        </div>
+        <div class="game-card" onclick="startEngine('WINGO 3M')">
+            <div><span style="color:var(--neon)">●</span> WINGO 3 MIN</div> <span>➔</span>
+        </div>
     </div>
 
-    <div id="screen-game" class="screen">
-        <div style="display:flex; justify-content:space-between; align-items:center; padding: 0 10px;">
-            <button onclick="backToLobby()" style="background:none; border:none; color:var(--neon); font-weight:bold;">◀ BACK</button>
-            <h3 id="activeGameTitle" style="color:var(--neon);">WINGO 30S</h3>
-        </div>
+    <div id="scr-engine" class="screen">
+        <div class="admin-badge">ADMIN MODE: ON</div>
+        <button onclick="backToLobby()" style="color:var(--neon); background:none; border:none; margin-bottom:20px; cursor:pointer;">◀ CHANGE GAME</button>
         
-        <div class="glass-card">
-            <div style="display:flex; justify-content:space-between; color:#888; font-size:12px;">
-                <span>PERIOD</span>
-                <span>TIMER</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:18px; font-weight:bold; margin-top:5px;">
-                <span id="period">20260415100010001</span>
-                <span id="timer" style="color:var(--gold);">00:00</span>
-            </div>
+        <h2 id="engineTitle" style="color:var(--neon); font-family:'Orbitron';">WINGO 30S</h2>
 
-            <div id="ball" class="ball">?</div>
-            <div id="result" style="font-size:35px; font-weight:900; height:45px; margin:10px 0;">---</div>
-            <button class="main-btn" id="pBtn" onclick="runAnalysis()">GET RESULT</button>
+        <div class="status-header">
+            <div style="text-align:left;">
+                <div style="color:#888; font-size:12px;">PERIOD</div>
+                <div id="periodDisplay" style="font-weight:bold; letter-spacing:1px;">20260415100010001</div>
+            </div>
+            <div style="text-align:right;">
+                <div style="color:#888; font-size:12px;">TIME</div>
+                <div id="timerDisplay" style="color:#ffcc00; font-weight:bold; font-size:18px;">00:30</div>
+            </div>
         </div>
+
+        <div id="ball" class="ball-engine">?</div>
+        <div id="resTxt" style="font-size:45px; font-weight:900; height:60px; letter-spacing:5px;">---</div>
+
+        <button class="main-btn" id="pBtn" onclick="runPrediction()">GET RESULT</button>
         
-        <div style="font-family:monospace; color:rgba(0,255,153,0.3); font-size:10px; text-align:center;">
-            ENCRYPTED CONNECTION: STABLE<br>
-            DATABASE: INJECTED_SUCCESS
-        </div>
+        <p style="margin-top:20px; font-size:10px; color:rgba(0,255,153,0.3);">ENCRYPTED BY ANIMESH V4.0 SYSTEM</p>
     </div>
 
     <script>
         let currentMode = '30s';
 
-        function goToLobby() {
-            if(document.getElementById('licenseKey').value.length > 3) {
-                showScreen('screen-lobby');
+        function checkKey() {
+            if(document.getElementById('license').value.length >= 4) {
+                showScreen('scr-lobby');
             }
         }
 
-        function openGame(title) {
-            document.getElementById('activeGameTitle').innerText = title;
-            currentMode = title.includes('30S') ? '30s' : '1m';
-            showScreen('screen-game');
-            startSync();
+        function startEngine(game) {
+            document.getElementById('engineTitle').innerText = game;
+            currentMode = game.includes('30S') ? '30s' : '1m';
+            showScreen('scr-engine');
+            syncData();
         }
 
-        function backToLobby() { showScreen('screen-lobby'); }
+        function backToLobby() { showScreen('scr-lobby'); }
 
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        function startSync() {
+        function syncData() {
             setInterval(() => {
                 const now = new Date();
                 const d = now.getFullYear().toString() + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0');
                 let sec = now.getSeconds();
-                let remain, pNum;
+                let remain, count;
 
                 if(currentMode === '30s') {
                     remain = 30 - (sec % 30);
-                    let count = (now.getHours() * 120) + (now.getMinutes() * 2) + (sec >= 30 ? 1 : 0);
-                    pNum = d + "10001" + count.toString().padStart(4, '0');
+                    count = (now.getHours() * 120) + (now.getMinutes() * 2) + (sec >= 30 ? 1 : 0);
                 } else {
                     remain = 60 - sec;
-                    let count = (now.getHours() * 60) + now.getMinutes();
-                    pNum = d + "10001" + count.toString().padStart(4, '0');
+                    count = (now.getHours() * 60) + now.getMinutes();
                 }
-                document.getElementById('period').innerText = pNum;
-                document.getElementById('timer').innerText = "00:" + (remain < 10 ? "0"+remain : remain);
+
+                document.getElementById('periodDisplay').innerText = d + "10001" + count.toString().padStart(4, '0');
+                document.getElementById('timerDisplay').innerText = "00:" + (remain < 10 ? "0"+remain : remain);
+                
+                if(remain === (currentMode === '30s' ? 30 : 60)) resetEngine();
             }, 1000);
         }
 
-        function runAnalysis() {
+        function runPrediction() {
             const ball = document.getElementById('ball');
-            const res = document.getElementById('result');
+            const res = document.getElementById('resTxt');
             const btn = document.getElementById('pBtn');
 
             btn.disabled = true;
             ball.innerText = "⏳";
-            res.innerText = "ANALYZING...";
+            res.innerText = "WAITING";
 
             setTimeout(() => {
                 const n = Math.floor(Math.random() * 10);
@@ -143,12 +147,23 @@
 
                 ball.innerText = n;
                 ball.style.background = c;
-                ball.style.boxShadow = `0 0 30px ${c}`;
                 ball.style.borderColor = "#fff";
+                ball.style.boxShadow = `0 0 40px ${c}`;
                 res.innerText = isBig ? "BIG" : "SMALL";
                 res.style.color = c;
-                btn.disabled = false;
-            }, 2000);
+            }, 2500);
+        }
+
+        function resetEngine() {
+            const btn = document.getElementById('pBtn');
+            btn.disabled = false;
+            const ball = document.getElementById('ball');
+            ball.innerText = "?";
+            ball.style.background = "radial-gradient(circle at 30% 30%, #555, #000)";
+            ball.style.boxShadow = "none";
+            ball.style.borderColor = "#444";
+            document.getElementById('resTxt').innerText = "---";
+            document.getElementById('resTxt').style.color = "white";
         }
     </script>
 </body>
