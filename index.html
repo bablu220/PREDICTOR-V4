@@ -1,124 +1,132 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI PREDICTOR PRO - KULAMANI</title>
+    <title>PREDICTOR 4.0 | OFFICIAL</title>
     <style>
-        :root { --neon: #00ff99; --bg: #090f15; --red: #ff4d4d; --green: #2ecc71; --violet: #9b59b6; }
+        :root { --neon: #00ff99; --bg: #050a10; --card: #161d26; }
         body { background: var(--bg); color: white; font-family: 'Poppins', sans-serif; margin: 0; text-align: center; }
         
-        /* Period Section */
-        .game-header { background: #1a242c; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #333; }
-        .period-box { text-align: left; }
-        .period-id { font-size: 18px; font-weight: bold; color: var(--neon); }
-        .timer { font-size: 24px; font-weight: 900; color: #ffcc00; }
+        /* Lobby Header */
+        .lobby-header { background: linear-gradient(180deg, #1a242c, #050a10); padding: 20px; border-bottom: 2px solid var(--neon); box-shadow: 0 0 15px var(--neon); }
+        .title { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: var(--neon); margin: 0; }
 
-        /* Lottery Ball Animation */
-        .animation-box { height: 150px; display: flex; justify-content: center; align-items: center; gap: 10px; margin: 30px 0; perspective: 1000px; }
-        
-        .ball {
-            width: 70px; height: 70px; border-radius: 50%; background: radial-gradient(circle at 30%, #444, #111);
-            display: flex; align-items: center; justify-content: center; font-size: 35px; font-weight: bold;
-            border: 4px solid #333; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Period & Timer - Real Game Style */
+        .game-status { display: flex; justify-content: space-between; padding: 15px 20px; background: var(--card); margin: 15px; border-radius: 10px; border: 1px solid #333; }
+        .period-info { text-align: left; }
+        .period-id { font-size: 16px; font-weight: bold; color: #fff; }
+        .timer { font-size: 22px; font-weight: bold; color: #ffcc00; }
+
+        /* Real Ball Container */
+        .ball-display { height: 140px; display: flex; justify-content: center; align-items: center; margin: 20px 0; }
+        .game-ball { 
+            width: 85px; height: 85px; border-radius: 50%; 
+            background: radial-gradient(circle at 30% 30%, #555, #000); 
+            border: 4px solid #444; display: flex; align-items: center; 
+            justify-content: center; font-size: 45px; font-weight: 900;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        /* Moving Animation */
-        .shuffling { animation: shuffle 0.2s infinite alternate; }
-        @keyframes shuffle {
-            from { transform: translateY(-10px) rotateX(10deg); }
-            to { transform: translateY(10px) rotateX(-10deg); }
-        }
+        /* Prediction Result */
+        .prediction-box { font-size: 35px; font-weight: 900; margin: 15px 0; height: 45px; letter-spacing: 4px; }
 
-        .prediction-result { font-size: 40px; font-weight: 900; margin: 10px 0; text-transform: uppercase; letter-spacing: 3px; }
-
-        /* Game Buttons Style */
+        /* Professional Button */
         .btn-predict {
-            background: linear-gradient(180deg, #00ff99, #00b36b);
-            color: #000; width: 85%; padding: 15px; border-radius: 50px; border: none;
-            font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,255,153,0.3);
+            width: 85%; padding: 16px; border-radius: 50px; border: none;
+            background: linear-gradient(180deg, var(--neon), #00b36b);
+            color: black; font-size: 18px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 15px rgba(0,255,153,0.4); transition: 0.3s;
         }
-        .btn-predict:disabled { background: #444; color: #888; box-shadow: none; }
+        .btn-predict:disabled { background: #333; color: #666; box-shadow: none; }
+        
+        /* Ball Shuffle Animation (Only when predicting) */
+        .shuffle { animation: ballMove 0.15s infinite alternate; }
+        @keyframes ballMove { from { transform: translateY(-5px); } to { transform: translateY(5px); } }
     </style>
 </head>
 <body>
 
-    <div class="game-header">
-        <div class="period-box">
-            <div style="color:#888; font-size:12px;">Period</div>
+    <div class="lobby-header">
+        <p class="title">PREDICTOR 4.0</p>
+    </div>
+
+    <div class="game-status">
+        <div class="period-info">
+            <div style="color:#888; font-size:12px; margin-bottom:4px;">Period Number</div>
             <div id="periodDisplay" class="period-id">20260415010001</div>
         </div>
         <div class="timer" id="timerDisplay">00:00</div>
     </div>
 
-    <div class="animation-box">
-        <div id="ball-1" class="ball">?</div>
+    <div class="ball-display">
+        <div id="mainBall" class="game-ball">?</div>
     </div>
 
-    <div id="predictionText" class="prediction-result" style="color:#555">READY</div>
+    <div id="predictionText" class="prediction-box">---</div>
 
-    <button class="btn-predict" id="predBtn" onclick="startLotteryAnim()">GET PREDICTION</button>
+    <button class="btn-predict" id="predBtn" onclick="getGamePrediction()">START PREDICTION</button>
 
     <script>
-        // 1. Exact Period Number Logic (Lottery7 Style)
-        function updateGameClock() {
+        // 1. Exact Period Logic
+        function syncGame() {
             const now = new Date();
             const year = now.getFullYear();
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const day = now.getDate().toString().padStart(2, '0');
             
-            // Period calculation: Total minutes today
+            // Period: Date + 01 + Total Minutes passed today
             const totalMinutes = (now.getHours() * 60) + now.getMinutes();
             const periodStr = `${year}${month}${day}01${totalMinutes.toString().padStart(4, '0')}`;
             document.getElementById('periodDisplay').innerText = periodStr;
 
-            // Timer (Count down to next minute)
+            // Timer: Seconds remaining in current minute
             const seconds = now.getSeconds();
             const remaining = 60 - seconds;
             document.getElementById('timerDisplay').innerText = "00:" + (remaining < 10 ? "0" + remaining : remaining);
 
-            if(remaining === 60) resetDisplay();
+            if(remaining === 60) resetForNewRound();
         }
-        setInterval(updateGameClock, 1000);
+        setInterval(syncGame, 1000);
 
-        // 2. Real Ball Shuffle Animation
-        function startLotteryAnim() {
-            const ball = document.getElementById('ball-1');
+        // 2. Professional Prediction Logic
+        function getGamePrediction() {
+            const ball = document.getElementById('mainBall');
             const btn = document.getElementById('predBtn');
-            const resTxt = document.getElementById('predictionText');
+            const txt = document.getElementById('predictionText');
 
             btn.disabled = true;
-            ball.classList.add('shuffling');
+            ball.classList.add('shuffle');
+            ball.innerText = "?";
             ball.style.borderColor = "#ffcc00";
-            resTxt.innerText = "WAITING...";
-            resTxt.style.color = "#ffcc00";
+            txt.innerText = "WAIT...";
+            txt.style.color = "#ffcc00";
 
             setTimeout(() => {
-                ball.classList.remove('shuffling');
+                ball.classList.remove('shuffle');
                 const num = Math.floor(Math.random() * 10);
                 const isBig = num >= 5;
-                
-                // Color matching: Even=Red, Odd=Green (Number 0 & 5 special can be added later)
-                const color = (num % 2 === 0) ? "#ff4d4d" : "#2ecc71";
-                
+                const color = (num % 2 === 0) ? "#ff4d4d" : "#2ecc71"; // Even=Red, Odd=Green
+
                 ball.innerText = num;
                 ball.style.borderColor = color;
-                ball.style.boxShadow = `0 0 20px ${color}`;
+                ball.style.boxShadow = `0 0 25px ${color}`;
                 
-                resTxt.innerText = isBig ? "BIG" : "SMALL";
-                resTxt.style.color = color;
-            }, 3000);
+                txt.innerText = isBig ? "BIG" : "SMALL";
+                txt.style.color = color;
+            }, 2500);
         }
 
-        function resetDisplay() {
+        function resetForNewRound() {
             const btn = document.getElementById('predBtn');
             btn.disabled = false;
-            const ball = document.getElementById('ball-1');
+            const ball = document.getElementById('mainBall');
             ball.innerText = "?";
-            ball.style.borderColor = "#333";
+            ball.style.borderColor = "#444";
             ball.style.boxShadow = "none";
-            document.getElementById('predictionText').innerText = "READY";
-            document.getElementById('predictionText').style.color = "#555";
+            document.getElementById('predictionText').innerText = "---";
+            document.getElementById('predictionText').style.color = "white";
         }
     </script>
 </body>
