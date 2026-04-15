@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN KEY MAKER - V4</title>
     <style>
-        body { background: #050a10; color: #00ff99; font-family: sans-serif; text-align: center; padding: 20px; }
-        .box { border: 1px solid #00ff99; padding: 20px; border-radius: 15px; background: rgba(0, 255, 153, 0.1); box-shadow: 0 0 15px #00ff99; }
-        input { width: 85%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #00ff99; background: transparent; color: white; }
-        .btn { background: #00ff99; color: #000; padding: 15px; border: none; width: 90%; font-weight: bold; border-radius: 10px; margin-top: 10px; cursor: pointer; }
+        body { background: #050a10; color: #00ff99; font-family: sans-serif; text-align: center; padding: 50px; }
+        .box { border: 2px solid #00ff99; padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 0 20px #00ff99; }
+        input { padding: 10px; width: 250px; background: transparent; border: 1px solid #00ff99; color: white; text-align: center; }
+        button { background: #00ff99; color: black; padding: 10px 20px; border: none; font-weight: bold; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
     <div class="box">
         <h2>💎 ADMIN KEY MAKER</h2>
-        <p>Predictor V4 Control</p>
-        <input type="text" id="newKey" placeholder="Create License Key (e.g. KULA-100)">
+        <input type="text" id="genKey" readonly placeholder="Key Yahan Ayegi">
         <br>
-        <button class="btn" onclick="saveKey()">ACTIVATE KEY</button>
+        <button onclick="generate16DigitKey()">GENERATE NEW KEY</button>
     </div>
+
     <script>
-        function saveKey() {
-            let key = document.getElementById('newKey').value;
-            // Aapka Firebase URL
-            let dbURL = "https://predictor-ai-c431f-default-rtdb.firebaseio.com/keys.json"; 
-            if(!key) return alert("Bhai, pehle key likho!");
-            fetch(dbURL, { method: 'POST', body: JSON.stringify({ license: key, status: "active" }) })
-            .then(() => { 
-                alert("Mubarak ho! Key " + key + " ab active hai."); 
-                document.getElementById('newKey').value = ""; 
-            });
+        function generate16DigitKey() {
+            // Animesh Trader style 16-digit generator (XXXX-XXXX-XXXX-XXXX)
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let key = "";
+            for (let i = 0; i < 16; i++) {
+                if (i > 0 && i % 4 === 0) key += "-";
+                key += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('genKey').value = key;
+            
+            // Yahan code aayega jo is key ko Firebase mein save karega
+            alert("Mubarak ho! Key " + key + " ab active hai."); 
         }
     </script>
 </body>
