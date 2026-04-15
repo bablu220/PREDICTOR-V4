@@ -3,148 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDICTOR 4.0 | OFFICIAL SYNC</title>
+    <title>PREDICTOR 4.0 | ULTIMATE SYNC</title>
     <style>
         :root { --neon: #00ff99; --bg: #050a10; --red: #ff4d4d; --green: #2ecc71; --violet: #b366ff; }
         
         body { 
-            background: var(--bg); 
-            color: white; 
-            font-family: 'Poppins', sans-serif; 
-            margin: 0; 
-            overflow: hidden;
-            background: radial-gradient(circle at center, #0a192f 0%, #050a10 100%);
+            background: var(--bg); color: white; font-family: 'Orbitron', sans-serif; 
+            margin: 0; overflow: hidden; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* Predictor 4.0 Animated Background */
-        .bg-animate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(0,255,153,0.05) 25%, transparent 25%) -50px 0,
-                        linear-gradient(-45deg, rgba(0,255,153,0.05) 25%, transparent 25%) -50px 0;
-            background-size: 100px 100px;
-            animation: move 4s linear infinite; z-index: -1;
+        /* PREDICTOR 4.0 ANIMATED BG */
+        .bg-lines {
+            position: fixed; inset: 0; z-index: -1;
+            background-image: linear-gradient(var(--bg) 95%, var(--neon) 95%), linear-gradient(90deg, var(--bg) 95%, var(--neon) 95%);
+            background-size: 40px 40px; opacity: 0.1; animation: gridMove 3s linear infinite;
         }
-        @keyframes move { from { background-position: 0 0; } to { background-position: 100px 100px; } }
+        @keyframes gridMove { from { background-position: 0 0; } to { background-position: 0 40px; } }
 
-        /* Period & Header */
-        .header { padding: 20px; border-bottom: 2px solid var(--neon); font-size: 26px; font-weight: 900; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
-        
-        .game-info { 
-            background: rgba(26, 36, 44, 0.9); margin: 20px; padding: 15px; 
-            border-radius: 15px; border: 1px solid #333;
+        /* HEADER */
+        .header { 
+            width: 100%; padding: 20px 0; background: rgba(0,255,153,0.1); 
+            border-bottom: 2px solid var(--neon); text-align: center;
+            font-size: 24px; font-weight: 900; color: var(--neon); letter-spacing: 5px;
+            box-shadow: 0 0 20px var(--neon);
+        }
+
+        /* PERIOD BOX - MATCHED EXACTLY */
+        .status-container {
+            width: 90%; background: rgba(22, 29, 38, 0.9); margin-top: 20px;
+            padding: 15px; border-radius: 15px; border: 1px solid #333;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .period-id { font-size: 19px; font-weight: bold; color: #fff; letter-spacing: 1px; }
-        .timer { font-size: 24px; font-weight: bold; color: #ffcc00; }
+        .p-label { color: #888; font-size: 12px; margin-bottom: 5px; }
+        .p-id { font-size: 18px; font-weight: bold; color: #fff; letter-spacing: 1px; }
+        .timer { font-size: 26px; font-weight: bold; color: #ffcc00; text-shadow: 0 0 10px #ffcc00; }
 
-        /* Real Game Ball Prediction */
-        .prediction-zone { height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
-        .result-ball {
-            width: 90px; height: 90px; border-radius: 50%;
+        /* ACTUAL GAME BALLS */
+        .prediction-area { margin: 40px 0; position: relative; }
+        .ball {
+            width: 100px; height: 100px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 50px; font-weight: 900; color: white;
-            background: radial-gradient(circle at 35% 35%, #555, #000);
-            border: 4px solid #444; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 55px; font-weight: 900; color: white;
+            background: radial-gradient(circle at 30% 30%, #555, #000);
+            border: 5px solid #444; transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
+        .shuffle { animation: ballJump 0.2s infinite alternate; }
+        @keyframes ballJump { to { transform: translateY(-15px); } }
 
-        .prediction-text { font-size: 35px; font-weight: 900; margin-top: 15px; letter-spacing: 4px; height: 40px; }
+        .res-text { font-size: 40px; font-weight: 900; margin-top: 20px; letter-spacing: 6px; height: 50px; }
 
-        /* Predictor 4.0 Button */
-        .btn-main {
+        /* PREDICT BUTTON */
+        .btn-predict {
             width: 85%; padding: 18px; border-radius: 50px; border: none;
-            background: var(--neon); color: black; font-size: 20px; font-weight: bold;
-            box-shadow: 0 0 20px rgba(0,255,153,0.5); cursor: pointer; transition: 0.3s;
+            background: linear-gradient(180deg, var(--neon), #00804d);
+            color: black; font-size: 20px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 20px rgba(0,255,153,0.4); transition: 0.3s;
         }
-        .btn-main:active { transform: scale(0.95); }
+        .btn-predict:disabled { background: #333; color: #666; box-shadow: none; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
-    <div class="bg-animate"></div>
+    <div class="bg-lines"></div>
     <div class="header">PREDICTOR 4.0</div>
 
-    <div class="game-info">
+    <div class="status-container">
         <div style="text-align:left">
-            <div style="color:#aaa; font-size:12px; margin-bottom:5px;">Period Number</div>
-            <div id="periodDisplay" class="period-id">20260415010001</div>
+            <div class="p-label">Period Number</div>
+            <div id="period" class="p-id">20260415100010001</div>
         </div>
-        <div id="timerDisplay" class="timer">00:00</div>
+        <div id="timer" class="timer">00:60</div>
     </div>
 
-    <div class="prediction-zone">
-        <div id="ball" class="result-ball">?</div>
-        <div id="resText" class="prediction-text">---</div>
+    <div class="prediction-area">
+        <div id="ball" class="ball">?</div>
     </div>
 
-    <button class="btn-main" id="pBtn" onclick="getPrediction()">GET PREDICTION</button>
+    <div id="result" class="res-text">---</div>
+
+    <button class="btn-predict" id="pBtn" onclick="doProfessionalPredict()">START ANALYSIS</button>
 
     <script>
-        // 1. PERFECT PERIOD SYNC (Matches 100% with Game)
+        // PERIOD MATCHING LOGIC (Custom for your game)
         function updateGameData() {
             const now = new Date();
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const day = now.getDate().toString().padStart(2, '0');
+            const datePart = now.getFullYear().toString() + (now.getMonth() + 1).toString().padStart(2, '0') + now.getDate().toString().padStart(2, '0');
             
-            // Total minutes passed today
-            const totalMinutes = (now.getHours() * 60) + now.getMinutes();
-            // Format: YYYYMMDD01 + 4 digit minute count
-            const period = `${year}${month}${day}01${(1001 + totalMinutes).toString().slice(1)}`;
-            document.getElementById('periodDisplay').innerText = period;
+            // Period Sync: Using your specific ID format 10001XXXX
+            const totalMins = (now.getHours() * 60) + now.getMinutes();
+            const periodID = datePart + "10001" + (1000 + totalMins).toString().slice(1);
+            document.getElementById('period').innerText = periodID;
 
-            // Timer (Remaining seconds in current minute)
             const seconds = now.getSeconds();
-            const remaining = 60 - seconds;
-            document.getElementById('timerDisplay').innerText = "00:" + (remaining < 10 ? "0" + remaining : remaining);
-
-            if(remaining === 60) resetUI();
+            const remain = 60 - seconds;
+            document.getElementById('timer').innerText = "00:" + (remain < 10 ? "0" + remain : remain);
+            
+            if(remain === 60) resetForNewRound();
         }
         setInterval(updateGameData, 1000);
 
-        // 2. REAL BALL PREDICTION (Matches Game Colors)
-        function getPrediction() {
+        function doProfessionalPredict() {
             const ball = document.getElementById('ball');
-            const txt = document.getElementById('resText');
+            const res = document.getElementById('result');
             const btn = document.getElementById('pBtn');
 
             btn.disabled = true;
-            ball.style.transform = "scale(1.2)";
-            ball.innerText = "...";
-            txt.innerText = "WAITING";
-            txt.style.color = "var(--neon)";
+            ball.classList.add('shuffle');
+            ball.innerText = "?";
+            res.innerText = "WAITING...";
+            res.style.color = "#888";
 
             setTimeout(() => {
-                ball.style.transform = "scale(1)";
+                ball.classList.remove('shuffle');
                 const num = Math.floor(Math.random() * 10);
                 const isBig = num >= 5;
                 
-                // Exact Color Logic as per Lottery7/55Club
-                let bgColor = (num % 2 === 0) ? "var(--red)" : "var(--green)";
+                // EXACT COLOR BALL LOGIC
+                let color;
                 if(num === 0 || num === 5) {
-                    // Special Violet mix for 0 and 5
-                    bgColor = "linear-gradient(135deg, " + (num===0?"var(--red)":"var(--green)") + " 50%, var(--violet) 50%)";
+                    color = "var(--violet)"; // Special for 0 and 5
+                    ball.style.background = `linear-gradient(135deg, ${num===0?'var(--red)':'var(--green)'} 50%, var(--violet) 50%)`;
+                } else {
+                    color = (num % 2 === 0) ? "var(--red)" : "var(--green)";
+                    ball.style.background = color;
                 }
 
                 ball.innerText = num;
-                ball.style.background = bgColor;
                 ball.style.borderColor = "#fff";
-                ball.style.boxShadow = `0 0 30px ${num % 2 === 0 ? 'var(--red)' : 'var(--green)'}`;
+                ball.style.boxShadow = `0 0 40px ${color}`;
                 
-                txt.innerText = isBig ? "BIG" : "SMALL";
-                txt.style.color = (num % 2 === 0) ? "var(--red)" : "var(--green)";
-            }, 2000);
+                res.innerText = isBig ? "BIG" : "SMALL";
+                res.style.color = color;
+            }, 3000);
         }
 
-        function resetUI() {
-            document.getElementById('pBtn').disabled = false;
+        function resetForNewRound() {
+            const btn = document.getElementById('pBtn');
+            btn.disabled = false;
             const ball = document.getElementById('ball');
             ball.innerText = "?";
-            ball.style.background = "radial-gradient(circle at 35% 35%, #555, #000)";
+            ball.style.background = "radial-gradient(circle at 30% 30%, #555, #000)";
             ball.style.boxShadow = "none";
             ball.style.borderColor = "#444";
-            document.getElementById('resText').innerText = "---";
-            document.getElementById('resText').style.color = "white";
+            document.getElementById('result').innerText = "---";
+            document.getElementById('result').style.color = "white";
         }
     </script>
 </body>
